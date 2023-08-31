@@ -3,8 +3,12 @@ kind: Kustomization
 resources:
   - ../../base
 
-patchesStrategicMerge:
- - deployment.yaml
+patches:
+- deployment.yaml
+
+replicas:
+- name: web-app
+  count: 5
 
 images:
   - name: nginx
