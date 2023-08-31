@@ -5,4 +5,46 @@ metadata:
 spec:
   replicas: 3
 
+---
+---
+#PreSyncのリソースHook
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: presync-job
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+spec:
+  template:
+    spec:
+      containers:
+      - name: presync
+        image: ubuntu:latest
+        command:
+          - "/bin/bash"
+        args:
+          - "-c"
+          - "date && echo 'presync' && sleep 60"
+      restartPolicy: Never
+
+---
+#PostSyncのリソースHook
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postsync-job
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    spec:
+      containers:
+      - name: postsync
+        image: ubuntu:latest
+        command:
+          - "/bin/bash"
+        args:
+          - "-c"
+          - "date && echo 'postsync' && sleep 60"
+      restartPolicy: Never
 
