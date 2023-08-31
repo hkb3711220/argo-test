@@ -10,8 +10,9 @@ images:
   - name: nginx
     newTag: latest
 
-commonLabels:
-  app.kubernetes.io/env: stg
-  app.kubernetes.io/managed-by: kustomize
+# commonLabels:
+
+#   app.kubernetes.io/env: stg
+#   app.kubernetes.io/managed-by: kustomize
 
 namespace: stg
