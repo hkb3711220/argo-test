@@ -7,5 +7,10 @@ patchesStrategicMerge:
  - deployment.yaml
 
 images:
-  - name: nginx
-    newTag: latest
+  - name: asia-northeast1-docker.pkg.dev/civil-campaign-244100/chanhu/chanhu-profile:latest
+
+commonLabels:
+  app.kubernetes.io/env: stg
+  app.kubernetes.io/managed-by: kustomize
+
+namespace: stg
