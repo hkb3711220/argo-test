@@ -11,4 +11,9 @@ images:
     newName: asia-northeast1-docker.pkg.dev/civil-campaign-244100/chanhu/chanhu-profile
     newTag: latest
 
+commonLabels:
+  app: web-app
+  app.kubernetes.io/env: stg
+  app.kubernetes.io/managed-by: kustomize
+
 namespace: stg
