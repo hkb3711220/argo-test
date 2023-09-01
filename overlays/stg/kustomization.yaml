@@ -5,12 +5,12 @@ resources:
 
 replicas:
 - name: web-app
-  count: 5
+  count: 1
 
 images:
   - name: nginx
     newName: asia-northeast1-docker.pkg.dev/civil-campaign-244100/chanhu/chanhu-profile
-    newTag: latest
+    newTag: stable
 
 commonLabels:
   app: web-app

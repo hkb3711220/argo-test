@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   selector:
     matchLabels:
@@ -16,6 +18,14 @@ spec:
         image: nginx:alpine
         ports:
         - containerPort: 80
+        volumeMounts:
+          - name: conf
+            mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: conf
+          configMap:
+            name: nginx-config
+
 
 ---
 apiVersion: v1
@@ -30,44 +40,63 @@ spec:
   - port: 8080
     targetPort: 80
 
----
-#PreSyncのリソースHook
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: presync-job
-  annotations:
-    argocd.argoproj.io/hook: PreSync
-spec:
-  template:
-    spec:
-      containers:
-      - name: presync
-        image: ubuntu:latest
-        command:
-          - "/bin/bash"
-        args:
-          - "-c"
-          - "date && echo 'presync' && sleep 60"
-      restartPolicy: Never
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: nginx-conf
+# data:
+#   nginx.conf: |-
+#     server {
+#       listen       80;
+#       listen  [::]:80;
+#       server_name  localhost;
 
----
-#PostSyncのリソースHook
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: postsync-job
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-spec:
-  template:
-    spec:
-      containers:
-      - name: postsync
-        image: ubuntu:latest
-        command:
-          - "/bin/bash"
-        args:
-          - "-c"
-          - "date && echo 'postsync' && sleep 60"
-      restartPolicy: Never
+#       # リクエストされたリソースがなければ、index.htmlを返却.
+#       location / {
+#           root /app/build;
+#           index index.html;
+#       }
+#     }
+
+# ---
+# #PreSyncのリソースHook
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: presync-job
+#   annotations:
+#     argocd.argoproj.io/hook: PreSync
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: presync
+#         image: ubuntu:latest
+#         command:
+#           - "/bin/bash"
+#         args:
+#           - "-c"
+#           - "date && echo 'presync' && sleep 60"
+#       restartPolicy: Never
+
+# ---
+# #PostSyncのリソースHook
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: postsync-job
+#   annotations:
+#     argocd.argoproj.io/hook: PostSync
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: postsync
+#         image: ubuntu:latest
+#         command:
+#           - "/bin/bash"
+#         args:
+#           - "-c"
+#           - "date && echo 'postsync' && sleep 60"
+#       restartPolicy: Never
