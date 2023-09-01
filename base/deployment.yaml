@@ -40,24 +40,24 @@ spec:
   - port: 8080
     targetPort: 80
 
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: nginx-conf
-# data:
-#   nginx.conf: |-
-#     server {
-#       listen       80;
-#       listen  [::]:80;
-#       server_name  localhost;
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |-
+    server {
+      listen       80;
+      listen  [::]:80;
+      server_name  localhost;
 
-#       # リクエストされたリソースがなければ、index.htmlを返却.
-#       location / {
-#           root /app/build;
-#           index index.html;
-#       }
-#     }
+      # リクエストされたリソースがなければ、index.htmlを返却.
+      location / {
+          root /app/build;
+          index index.html;
+      }
+    }
 
 # ---
 # #PreSyncのリソースHook
